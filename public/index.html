@@ -99,8 +99,8 @@
           <p>This app is free!!! And you are the only one holding your data!</p>
         </article>
 
-        <hr>
-        <hr>
+        <hr />
+        <hr />
         <!-- This is a Semantic HTML Change -->
         <figure>
           <br />
@@ -277,17 +277,22 @@
       }
 
       function getBudget() {
-        axios.get("http://localhost:3000/budget").then(function (res) {
-          for (var i = 0; i < res.data.myBudget.length; i++) {
-            dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-            dataSource.labels[i] = res.data.myBudget[i].title;
-          }
-          createChart();
-
-          createBarChart(res.data.myBudget);
-          createDonutChart(res.data.myBudget);
-          createHistogram(res.data.myBudget);
-        });
+        axios
+          .get("/budget")
+          .then(function (res) {
+            const budgetData = res.data.myBudget;
+            for (let i = 0; i < budgetData.length; i++) {
+              dataSource.datasets[0].data[i] = budgetData[i].budget;
+              dataSource.labels[i] = budgetData[i].title;
+            }
+            createChart();
+            createBarChart(budgetData);
+            createDonutChart(res.data.myBudget);
+            createHistogram(res.data.myBudget);
+          })
+          .catch(function (err) {
+            console.error("Error fetching data:", err);
+          });
       }
 
       getBudget();

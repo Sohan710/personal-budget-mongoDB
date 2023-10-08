@@ -1,61 +1,44 @@
 const express = require('express');
+const { MongoClient } = require('mongodb');
 const app = express();
 const port = 3000;
 const fs = require('fs');
+const uri = "mongodb://localhost:27017";
+const { ObjectId } = require('mongodb');
+let db;
 
 app.use('/', express.static('public'));
-
-// const budget = {
-//     myBudget: [
-//     {
-//         title: 'Eat Out',
-//         budget: 30
-//     },
-//     {
-//         title: 'Rent',
-//         budget: 350
-//     },
-//     {
-//         title: 'Groceries',
-//         budget: 90
-//     },
-//     {
-//         title: 'Shopping',
-//         budget: 120
-//     },
-//     {
-//         title: 'Home Essentials',
-//         budget: 20
-//     },
-//     {
-//         title: 'Gas',
-//         budget: 30
-//     },
-//     {
-//         title: 'Entertainment',
-//         budget: 80
-//     },
-//     {
-//         title: 'Savings',
-//         budget: 200
-//     },
-// ]};
 
 app.get('/hello', (req, res) => {
   res.send('Hello World!');
 });
 
-app.get('/budget', (req, res) => {
-    fs.readFile('budget-data.json', 'utf8', (err, data) => {
-        if (err) {
-            res.status(500).send('Error reading data from budget-data.json');
-            return;
-        }
-        res.send(JSON.parse(data));
-    });
+app.get('/budget', async (req, res) => {
+  try {
+    console.log('Inside /budget route');
+    const budgetCollection = db.collection('Assignment_8');
+    const budget = await budgetCollection.findOne({_id: new ObjectId('65217823e021f237a7ad052d')});
+    console.log('Budget fetched:', budget);
+    
+    if (!budget) {
+      console.error('No budget data found');
+      return res.status(404).send('No budget data found');
+    }
+
+    res.status(200).send(JSON.stringify(budget));
+  } catch (err) {
+    console.error('Error fetching data from MongoDB', err);
+    res.status(500).send('Error fetching data from MongoDB');
+  }
 });
-
-
 app.listen(port, () => {
-  console.log('Example app listening at http://localhost:3000');
+console.log(`App listening at http://localhost:${port}`);
 });
+
+MongoClient.connect(uri)
+  .then(client => {
+      db = client.db('ITCS_5166_NBAD');
+  })
+  .catch(err => console.error("Failed to connect to the database", err.stack));
+
+
