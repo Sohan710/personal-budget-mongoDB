@@ -1,9 +1,5 @@
-# Instructions for Quiz 08
-# Assignment Objectives: 
-
-1. Measure the ability of the student to interact with Mongodb command line.
-2. Measure the capability of the student to build express server with MongoDB based applications.
-3. Measure the capability of the student to use mongoose ODM. 
+# ITCS NBAD 5166 - Assignment Week 08
+# Sohan Birajdar - 801298151
 
 # Assignment Instructions: 
 
