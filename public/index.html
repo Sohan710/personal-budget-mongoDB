@@ -287,8 +287,6 @@
             }
             createChart();
             createBarChart(budgetData);
-            createDonutChart(res.data.myBudget);
-            createHistogram(res.data.myBudget);
           })
           .catch(function (err) {
             console.error("Error fetching data:", err);

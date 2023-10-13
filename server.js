@@ -31,14 +31,27 @@ app.get('/budget', async (req, res) => {
     res.status(500).send('Error fetching data from MongoDB');
   }
 });
-app.listen(port, () => {
-console.log(`App listening at http://localhost:${port}`);
+
+// Defining POST route
+app.post('/add-document', async (req, res) => {
+  try {
+    const document = req.body;
+    const result = await db.collection('Assignment_8').insertOne(document);
+    res.status(201).send({ _id: result.insertedId });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-MongoClient.connect(uri)
+
+// Start server
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
+});
+
+MongoClient.connect('mongodb://localhost:27017')
   .then(client => {
-      db = client.db('ITCS_5166_NBAD');
+    db = client.db('ITCS_5166_NBAD');
   })
   .catch(err => console.error("Failed to connect to the database", err.stack));
-
-
