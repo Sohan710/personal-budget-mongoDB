@@ -171,16 +171,7 @@
         var color = d3
           .scaleOrdinal()
           .domain(data.map((d) => d.title)) // Assuming data is globally available
-          .range([
-            "#ffcd56",
-            "#ff6384",
-            "#36a2eb",
-            "#fd6b19",
-            "#283747",
-            "#7D3C98",
-            "#FA0404",
-            "#2ECC71",
-          ]);
+          .range(data.map((d) => d.color));
 
         var svg = d3
           .select("#barChart")
@@ -284,6 +275,9 @@
             for (let i = 0; i < budgetData.length; i++) {
               dataSource.datasets[0].data[i] = budgetData[i].budget;
               dataSource.labels[i] = budgetData[i].title;
+              dataSource.datasets[0].backgroundColor[i] = budgetData[i].color;
+   
+
             }
             createChart();
             createBarChart(budgetData);
